@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechMart - Modern Storefront Project</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --bg-dark: #0b0f19;
+            --card-bg: #131a2c;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(59, 130, 246, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(139, 92, 246, 0.15) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* Header Navigation */
+        .header {
+            background: rgba(19, 26, 44, 0.7);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand-name {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-name span {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 500;
+            margin-left: 25px;
+            font-size: 14px;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-blue);
+        }
+
+        /* Search & Filter Bar */
+        .filter-bar {
+            padding: 30px 8% 10px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .search-input {
+            background: var(--card-bg);
+            color: var(--text-main);
+            padding: 12px 20px;
+            width: 320px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-size: 14px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--accent-blue);
+        }
+
+        .category-tags button {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 10px 20px;
+            margin-left: 8px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .category-tags button.active, .category-tags button:hover {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+        }
+
+        /* Content Area */
+        .main-container {
+            padding: 40px 8%;
+        }
+
+        .grid-title {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 30px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* Modern Glassmorphic Tech Cards */
+        .grid-card {
+            background: rgba(19, 26, 44, 0.6);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .grid-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        /* High Quality Live Image Container Setup */
+        .card-image-box {
+            height: 200px;
+            width: 100%;
+            overflow: hidden;
+            background: #1e293b;
+            position: relative;
+        }
+
+        .card-image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .grid-card:hover .card-image-box img {
+            transform: scale(1.08);
+        }
+
+        .card-details {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .card-details .tag {
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--accent-blue);
+            margin-bottom: 6px;
+            letter-spacing: 1px;
+        }
+
+        .card-details h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 10px;
+        }
+
+        .card-details p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: auto;
+        }
+
+        .price-tag {
+            font-size: 19px;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .btn-action {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+        /* --- STYLISH CONTRAST BLACK FOOTER --- */
+        .footer {
+            background-color: #000000; /* Absolute deep black background */
+            color: #ffffff; /* Ultra clear stark white text */
+            text-align: center;
+            padding: 40px 20px;
+            font-size: 14px;
+            margin-top: 80px;
+            border-top: 2px solid var(--accent-blue); /* Glowing top separator band */
+            letter-spacing: 0.8px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Header -->
+    <header class="header">
+        <div class="brand-name">Tech<span>Mart</span></div>
+        <nav class="nav-links">
+            <a href="#">Showcase</a>
+            <a href="#">Components</a>
+            <a href="#">Repository</a>
+        </nav>
+    </header>
+
+    <!-- Search / Filter Systems -->
+    <section class="filter-bar">
+        <input type="text" class="search-input" placeholder="Search components...">
+        <div class="category-tags">
+            <button class="active">All Tech</button>
+            <button>Audio</button>
+            <button>Wearables</button>
+        </div>
+    </section>
+
+    <!-- Product Interface Matrix -->
+    <main class="main-container">
+        <h2 class="grid-title">Development Assets Lineup</h2>
+        
+        <div class="product-grid">
+            <!-- Card 1 -->
+            <div class="grid-card">
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&auto=format&fit=crop&q=80" alt="Headphones">
+                </div>
+                <div class="card-details">
+                    <span class="tag">Audio Core</span>
+                    <h3>Acoustic Studio Pulse</h3>
+                    <p>Designed with procedural matrix grids for supreme acoustic fidelity rendering layouts.</p>
+                    <div class="action-row">
+                        <span class="price-tag">LKR 45,000</span>
+                        <button class="btn-action">View Asset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="grid-card">
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&auto=format&fit=crop&q=80" alt="Smart Watch">
+                </div>
+                <div class="grid-card-content card-details">
+                    <span class="tag">Wearables</span>
+                    <h3>Sync Chrono Matrix</h3>
+                    <p>Advanced tracking configuration module built for clean data telemetry flows.</p>
+                    <div class="action-row">
+                        <span class="price-tag">LKR 32,500</span>
+                        <button class="btn-action">View Asset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="grid-card">
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500&auto=format&fit=crop&q=80" alt="Keyboard">
+                </div>
+                <div class="card-details">
+                    <span class="tag">Hardware UI</span>
+                    <h3>Quantum Deck Mechanical</h3>
+                    <p>Engineered structural tactile array logic layout optimized for framework deployment.</p>
+                    <div class="action-row">
+                        <span class="price-tag">LKR 18,900</span>
+                        <button class="btn-action">View Asset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 (FIXED: Stable Contrast Mouse Image) -->
+            <div class="grid-card">
+                <div class="card-image-box">
+                    <img src="https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=500&auto=format&fit=crop&q=80" alt="Sleek Tech Mouse">
+                </div>
+                <div class="card-details">
+                    <span class="tag">Peripherals</span>
+                    <h3>Vector Point Omni Mouse</h3>
+                    <p>High response algorithmic tracking interface concept built for accurate layout flows.</p>
+                    <div class="action-row">
+                        <span class="price-tag">LKR 12,000</span>
+                        <button class="btn-action">View Asset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Contrast High Visibility Footer Layout -->
+    <footer class="footer">
+        <p>Portfolio Project Component &copy; 2026 Developed with CSS Gradient Architecture</p>
+    </footer>
+
+</body>
+</html>
